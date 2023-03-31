@@ -1,0 +1,56 @@
+body {
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    background-color: black;
+}
+
+#chooseLevel {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    align-items: center;
+    font-size: 1.4rem;
+}
+
+.btn {
+    width: 4rem;
+    height: 2rem;
+    margin: 2rem 0.5rem;
+    background-color: rgb(9, 120, 224);
+    border: 1px solid yellow;
+    color: yellow;
+    font-size: 1.3rem;
+    border-radius: 3px;
+}
+
+
+.btn:hover {
+    background-color: yellow;
+    color: rgb(9, 120, 224);
+}
+
+#score {
+    margin-top: 2rem;
+    border: 1px solid white;
+    padding: 1rem 2rem;
+    display: none;
+    color: white;
+}
+
+#grid {
+    height: 440px;
+    width: 440px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    position: relative;
+    display: none;
+    border: 1px solid white;
+}
+
+.alien {
+    background-color: pink;
+}
