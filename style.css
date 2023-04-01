@@ -51,6 +51,21 @@ body {
     border: 1px solid white;
 }
 
+#grid div {
+    height: 20px;
+    width: 20px;
+    border: 1px solid black;
+}
+
 .alien {
     background-color: pink;
+}
+
+.user {
+    background-color: yellow;
+}
+
+.bullet {
+    background-color: green;
+    border-radius: 50%;
 }
