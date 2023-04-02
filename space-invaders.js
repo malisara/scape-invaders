@@ -12,10 +12,10 @@ const NUMBER_ALL_SQUARES = 400;
 let allDivsArray = []; //IDs
 let aliensArray = []; //IDs
 let removedAliens = [];
+let direction = 1;
 let level = 0;
 let score = 0;
 let currentUserLocation = 389;
-
 
 btnChooseLevel.forEach(button => {
     button.addEventListener('click', function () {
@@ -34,8 +34,9 @@ function startNewGame() {
     createBaseDivs();
     createAlienArray();
     allDivsArray[currentUserLocation].classList.add('user'); //Get user
-
+    setInterval(moveAliens, 100);
 }
+
 
 function createBaseDivs() {
     for (let i = 0; i < NUMBER_BLOCKS_ROW ** 2; i++) {
@@ -45,6 +46,7 @@ function createBaseDivs() {
         gameGrid.appendChild(blankDiv);
     }
 }
+
 
 function createAlienArray() {
     const START_ALIEN_POSITION = 5;
@@ -89,11 +91,13 @@ function moveUser(e) {
     }
 }
 
+
 function deleteUser() {
     allDivsArray.forEach(div => {
         div.classList.remove('user');
     });
 }
+
 
 function reDrawUser(userLocation) {
     allDivsArray[userLocation].classList.add('user');
@@ -141,6 +145,68 @@ function removeBullets() {
 };
 
 
+function moveAliens() {
+
+    let leftEdge = false;
+    let rightEdge = false;
+
+    Array.from(document.querySelectorAll('.alien')).map(div => {
+        if (div.classList.contains('user') || div.id >= NUMBER_ALL_SQUARES - NUMBER_BLOCKS_ROW) {
+            gameOver();
+        }
+
+        else {
+            if (div.id % NUMBER_BLOCKS_ROW - NUMBER_BLOCKS_ROW + 1 === 0) {
+                rightEdge = true;
+            }
+
+            if (div.id % NUMBER_BLOCKS_ROW === 0) {
+                leftEdge = true;
+            }
+        }
+    });
+
+    deleteAliens();
+
+    if (rightEdge && direction === 1) {
+        for (let i = 0; i < aliensArray.length; i++) {
+            aliensArray[i] += NUMBER_BLOCKS_ROW + 1;
+            direction = -1;
+        }
+    }
+
+    else if (leftEdge && direction === -1) {
+        for (let i = 0; i < aliensArray.length; i++) {
+            aliensArray[i] += NUMBER_BLOCKS_ROW - 1;
+            direction = 1;
+        }
+    }
+
+    for (let i in aliensArray) {
+        aliensArray[i] += direction;
+    }
+
+    reDrawAliens();
+}
+
+
+function deleteAliens() {
+    Array.from(document.querySelectorAll('.alien')).forEach(alien => {
+        alien.classList.remove('alien');
+    });
+
+};
+
+
+function reDrawAliens() {
+    for (let i = 0; i < aliensArray.length; i++) {
+        if (!removedAliens.includes(i)) {
+            allDivsArray[aliensArray[i]].classList.add('alien');
+        }
+    }
+}
+
+
 function resetValues() {
     allDivsArray = [];
     aliensArray = [];
@@ -149,5 +215,10 @@ function resetValues() {
 
 function youWin() {
     console.log('yaay');
+    //TODO
+}
+
+function gameOver() {
+    console.log('you lose');
     //TODO
 }
