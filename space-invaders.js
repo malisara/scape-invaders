@@ -5,6 +5,7 @@ const btnChooseLevel = Array.from(document.querySelectorAll('.btn')); 4;
 const divChooseLevel = document.getElementById('chooseLevel');
 const gameGrid = document.getElementById('grid');
 const scoreGrid = document.getElementById('score');
+const endGameDiv = document.getElementById('endGame');
 
 const NUMBER_BLOCKS_ROW = 20;
 const NUMBER_ALL_SQUARES = 400;
@@ -16,6 +17,7 @@ let direction = 1;
 let level = 0;
 let score = 0;
 let currentUserLocation = 389;
+let intervalMoveAliens;
 
 btnChooseLevel.forEach(button => {
     button.addEventListener('click', function () {
@@ -27,14 +29,15 @@ btnChooseLevel.forEach(button => {
 
 
 function startNewGame() {
-    resetValues();
     gameGrid.style.display = 'flex';
     scoreGrid.style.display = 'flex';
     scoreGrid.innerHTML = 'Score: ' + score;
     createBaseDivs();
     createAlienArray();
+    currentUserLocation = 390;
     allDivsArray[currentUserLocation].classList.add('user'); //Get user
-    setInterval(moveAliens, 100);
+    document.addEventListener('keydown', moveUser);
+    intervalMoveAliens = setInterval(moveAliens, 100);
 }
 
 
@@ -62,9 +65,6 @@ function createAlienArray() {
         allDivsArray[id].classList.add('alien');
     });
 }
-
-
-document.addEventListener('keydown', moveUser);
 
 
 function moveUser(e) {
@@ -146,7 +146,7 @@ function removeBullets() {
 
 
 function moveAliens() {
-
+    //TODO works too slow
     let leftEdge = false;
     let rightEdge = false;
 
@@ -207,18 +207,35 @@ function reDrawAliens() {
 }
 
 
+function youWin() {
+    endGameBase('Yaay, you win!');
+}
+
+
+function gameOver() {
+    endGameBase('You lose!');
+}
+
+
+function endGameBase(text) {
+    clearInterval(intervalMoveAliens);
+    document.removeEventListener('keydown', moveUser);
+    endGameDiv.innerText = text;
+    endGameDiv.style.display = 'flex';
+    setTimeout(resetValues, 1000);
+}
+
+
 function resetValues() {
     allDivsArray = [];
     aliensArray = [];
     removedAliens = [];
-}
-
-function youWin() {
-    console.log('yaay');
-    //TODO
-}
-
-function gameOver() {
-    console.log('you lose');
-    //TODO
+    score = 0;
+    deleteUser();
+    gameGrid.innerHTML = '';
+    gameGrid.style.display = 'none';
+    endGameDiv.style.display = 'none';
+    divChooseLevel.style.display = 'flex';
+    scoreGrid.style.display = 'none';
+    document.removeEventListener('keydown', moveUser);
 }
